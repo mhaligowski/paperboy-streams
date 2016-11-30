@@ -37,9 +37,13 @@ func handleGetItems(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func init() {
+func Start() {
 	r := mux.NewRouter();
 	r.HandleFunc("/items", handleGetItems)
 
 	http.Handle("/", r)
+}
+
+func init() {
+	Start()
 }
