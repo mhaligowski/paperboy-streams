@@ -9,15 +9,9 @@ import (
 	"google.golang.org/appengine/log"
 )
 
-type StreamItem struct {
-	StreamItemId  string `datastore:"id"`;
-	UserId        string;
-	TargetId      string;
-	Title         string;
-	OrderSequence int64;
-}
+type streamItemsGetter func(r *http.Request) ([]StreamItem, error)
 
-func handleGetItems(w http.ResponseWriter, r *http.Request) {
+func dsGetter(r *http.Request) ([]StreamItem, error) {
 	ctx := appengine.NewContext(r)
 
 	query := datastore.NewQuery("StreamItem").Order("-order_sequence")
@@ -26,20 +20,30 @@ func handleGetItems(w http.ResponseWriter, r *http.Request) {
 	_, err := query.GetAll(ctx, &items)
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
 		log.Errorf(ctx, "Error when querying from datastore", err)
+	}
+
+	return items, err
+}
+
+func handleGetStreamItems(w http.ResponseWriter, r *http.Request, g streamItemsGetter) {
+	items, err := g(r)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	for _, item := range items {
 		fmt.Fprintf(w, "%v\n", item.Title)
 	}
-
 }
 
 func Start() {
 	r := mux.NewRouter();
-	r.HandleFunc("/items", handleGetItems)
+	r.HandleFunc("/items", func(w http.ResponseWriter, r *http.Request) {
+		handleGetStreamItems(w, r, dsGetter)
+	})
 
 	http.Handle("/", r)
 }
