@@ -3,10 +3,12 @@ package streams
 import (
 	"net/http"
 	"github.com/gorilla/mux"
+
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
-	"fmt"
 	"google.golang.org/appengine/log"
+
+	"encoding/json"
 )
 
 type streamItemsGetter func(r *http.Request) ([]StreamItem, error)
@@ -34,9 +36,7 @@ func handleGetStreamItems(w http.ResponseWriter, r *http.Request, g streamItemsG
 		return
 	}
 
-	for _, item := range items {
-		fmt.Fprintf(w, "%v\n", item.Title)
-	}
+	json.NewEncoder(w).Encode(items)
 }
 
 func Start() {
