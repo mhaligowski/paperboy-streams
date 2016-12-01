@@ -16,7 +16,7 @@ type streamItemsGetter func(r *http.Request) ([]StreamItem, error)
 func dsGetter(r *http.Request) ([]StreamItem, error) {
 	ctx := appengine.NewContext(r)
 
-	query := datastore.NewQuery("StreamItem").Order("-order_sequence")
+	query := datastore.NewQuery("StreamItem").Order("-OrderSequence")
 
 	var items []StreamItem
 	_, err := query.GetAll(ctx, &items)
