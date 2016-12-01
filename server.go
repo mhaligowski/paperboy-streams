@@ -25,7 +25,11 @@ func dsGetter(r *http.Request) ([]StreamItem, error) {
 		log.Errorf(ctx, "Error when querying from datastore", err)
 	}
 
-	return items, err
+	if items == nil {
+		return make([]StreamItem, 0), err
+	} else {
+		return items, err
+	}
 }
 
 func handleGetStreamItems(w http.ResponseWriter, r *http.Request, g streamItemsGetter) {
