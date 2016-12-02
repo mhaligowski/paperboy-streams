@@ -2,7 +2,9 @@ package streams
 
 import (
 	"net/http"
+
 	"github.com/gorilla/mux"
+	"github.com/gorilla/handlers"
 
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
@@ -49,7 +51,7 @@ func Start() {
 		handleGetStreamItems(w, r, dsGetter)
 	})
 
-	http.Handle("/", r)
+	http.Handle("/", handlers.CORS()(r))
 }
 
 func init() {
