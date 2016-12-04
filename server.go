@@ -5,15 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/handlers"
-
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/datastore"
-	"google.golang.org/appengine/log"
-
-	"encoding/json"
 )
-
-
 
 func Start() {
 	r := mux.NewRouter();
