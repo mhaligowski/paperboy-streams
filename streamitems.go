@@ -5,5 +5,6 @@ type StreamItem struct {
 	UserId        string;
 	TargetId      string;
 	Title         string;
+	FeedTitle     string;
 	OrderSequence int64;
 }
