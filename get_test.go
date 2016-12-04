@@ -12,7 +12,7 @@ func TestEmpty(t *testing.T) {
 	}
 
 	w := httptest.NewRecorder()
-	handleGetStreamItems(w, nil, f)
+	HandleGetStreamItems(w, nil, f)
 
 	if w.Body.String() != "[]\n" {
 		t.Errorf("Expected [], got %q", w.Body.String())
