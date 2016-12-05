@@ -14,12 +14,13 @@ func init() {
 	})
 
 	r.HandleFunc("/jobs", func(w http.ResponseWriter, r *http.Request) {
-		HandleStartJob(w, r, formParser, dsItemsWriter)
-	}).Methods(http.MethodPost)
-
-	r.HandleFunc("/jobs", func(w http.ResponseWriter, r *http.Request) {
 		HandleStartJob(w, r, jsonParser, dsItemsWriter)
 	}).Methods(http.MethodPost).Headers("Content-Type", "application/json")
+
+	r.HandleFunc("/jobs", func(w http.ResponseWriter, r *http.Request) {
+		HandleStartJob(w, r, formParser, dsItemsWriter)
+	}).Methods(http.MethodPost).Headers("Content-Type", "application/x-www-form-encoded")
+
 
 	http.Handle("/", handlers.CORS()(r))
 }
