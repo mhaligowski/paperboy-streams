@@ -4,4 +4,7 @@ service: streams
 handlers:
     - url: /items
       script: _go_app
+    - url: /jobs
+      script: _go_app
+
 
