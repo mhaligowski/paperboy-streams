@@ -2,7 +2,9 @@ package streams
 
 import (
 	"google.golang.org/appengine/datastore"
+
 	"golang.org/x/net/context"
+	"google.golang.org/appengine/log"
 )
 
 type streamItemsWriter func(context.Context, []StreamItem) (error)
@@ -14,6 +16,8 @@ func dsItemsWriter(ctx context.Context, items []StreamItem) (error) {
 	}
 
 	_, err := datastore.PutMulti(ctx, keys, items)
+
+	log.Debugf(ctx, "Written %d items", len(items))
 
 	if err != nil {
 		return err

@@ -39,6 +39,8 @@ func HandleStartJob(w http.ResponseWriter, r *http.Request, ip inputParser, siw 
 
 	input, err := ip(r)
 
+	log.Debugf(ctx, "Got %d requests", len(input.Entries))
+
 	if err != nil {
 		log.Errorf(ctx, "Could not parse the input from %v", r.Body)
 		http.Error(w, "Could not parse the input", http.StatusBadRequest)
