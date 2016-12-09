@@ -2,11 +2,11 @@ package streams
 
 import (
 	"net/http"
-	"google.golang.org/appengine/log"
+	"time"
 
 	"github.com/nu7hatch/gouuid"
-	"time"
 	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 )
 
 func buildStreamItems(update *StreamUpdate, userId string) ([]StreamItem, []error) {
