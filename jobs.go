@@ -10,7 +10,7 @@ import (
 )
 
 func buildStreamItems(update *StreamUpdate, userId string) ([]StreamItem, []error) {
-	result := make([]StreamItem, len(update.Entries), len(update.Entries))
+	result := make([]StreamItem, 0, len(update.Entries))
 	errors := make([]error, 0, len(update.Entries))
 
 	for _, entry := range update.Entries {
@@ -56,6 +56,7 @@ func HandleStartJob(w http.ResponseWriter, r *http.Request, ip inputParser, siw 
 	for _, userId := range userIds {
 		// TODO unignore errors
 		items, _ := buildStreamItems(input, userId)
+		log.Debugf(ctx, "Built %d items for user %q", len(items), userId)
 
 		err = siw(ctx, items)
 
