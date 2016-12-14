@@ -1,10 +1,9 @@
 package streams
 
 import (
-	"google.golang.org/appengine/datastore"
-
 	"golang.org/x/net/context"
 	"google.golang.org/appengine/log"
+	"google.golang.org/appengine/datastore"
 )
 
 type streamItemsWriter func(context.Context, []StreamItem) (error)
@@ -25,5 +24,3 @@ func dsItemsWriter(ctx context.Context, items []StreamItem) (error) {
 		return nil
 	}
 }
-
-
