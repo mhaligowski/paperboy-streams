@@ -9,7 +9,22 @@ import (
 	"google.golang.org/appengine/log"
 )
 
-type StreamItemsGetter func(r *http.Request) ([]StreamItem, error)
+type streamItemsGetter func(r *http.Request) ([]StreamItem, error)
+
+type getStreamItemsHandler struct {
+	getStreamItems streamItemsGetter
+}
+
+func (h getStreamItemsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	items, err := h.getStreamItems(r)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(items)
+}
 
 func dsGetter(r *http.Request) ([]StreamItem, error) {
 	ctx := appengine.NewContext(r)
@@ -30,14 +45,4 @@ func dsGetter(r *http.Request) ([]StreamItem, error) {
 	}
 }
 
-func HandleGetStreamItems(w http.ResponseWriter, r *http.Request, g StreamItemsGetter) {
-	items, err := g(r)
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	json.NewEncoder(w).Encode(items)
-}
 
