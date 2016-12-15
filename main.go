@@ -4,19 +4,21 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/gorilla/handlers"
+	"github.com/rs/cors"
 )
 
 func Run() {
 	r := mux.NewRouter();
 
 	r.Handle("/items",
-		handlers.CORS()(getStreamItemsHandler{dsGetter}))
+		getStreamItemsHandler{dsGetter}).
+		Methods(http.MethodGet)
+
 
 	r.Handle("/jobs",
 		startJobHandler{dsItemsWriter}).
 		Methods(http.MethodPost).
 		Headers("Content-Type", "application/json")
 
-	http.Handle("/", r)
+	http.Handle("/", cors.Default().Handler(r))
 }
