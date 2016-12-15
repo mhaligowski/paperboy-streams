@@ -6,7 +6,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func init() {
+func Run() {
 	r := mux.NewRouter();
 
 	r.Handle("/items",
